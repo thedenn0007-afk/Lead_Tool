@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LeadTool — How To Use</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+.guide-section{margin-bottom:32px;}
+.guide-section h3{font-size:20px;font-weight:800;letter-spacing:-0.4px;margin-bottom:6px;display:flex;align-items:center;gap:10px;}
+.guide-section p{font-size:14px;color:var(--ink2);line-height:1.7;margin-bottom:12px;}
+.checklist{display:flex;flex-direction:column;gap:8px;}
+.cl-item{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;background:white;border:1.5px solid var(--border);border-radius:var(--r-sm);font-size:14px;cursor:pointer;transition:all .12s;user-select:none;}
+.cl-item:hover{border-color:var(--green);}
+.cl-item.done{background:var(--green-bg);border-color:var(--green);}
+.cl-box{width:22px;height:22px;border-radius:6px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;margin-top:1px;transition:all .12s;}
+.cl-item.done .cl-box{background:var(--green);border-color:var(--green);color:white;}
+.col-label{font-weight:700;font-size:12px;white-space:nowrap;}
+</style>
+</head>
+<body>
+<div class="app">
+
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <h1><div class="logo-pulse"></div><span>LeadTool</span></h1>
+    <p>No API · No Code · Anyone can use</p>
+  </div>
+  <div class="nav">
+    <div class="nav-section">Main</div>
+    <a href="find.html"><span class="ico">🔍</span><span>Find Leads</span></a>
+    <a href="auto.html"><span class="ico">🤖</span><span>Auto Scrape</span></a>
+    <div class="nav-section">Tools</div>
+    <a href="guide.html" class="active"><span class="ico">📖</span><span>How To Use</span></a>
+    <a href="settings.html"><span class="ico">⚙️</span><span>Settings</span></a>
+  </div>
+  <div class="sidebar-footer">All data saved in<br>your browser locally</div>
+</nav>
+
+<main class="main">
+  <div class="page-header">
+    <h2>📖 How To Use This Tool</h2>
+    <p>Read this once — then any employee can find and manage leads in 15 minutes</p>
+  </div>
+
+  <div class="g2" style="gap:24px;align-items:start;">
+    <div>
+
+      <!-- STEP 1 -->
+      <div class="card guide-section mb20">
+        <h3>🔍 Step 1 — Find Businesses</h3>
+        <p>Go to <a href="find.html" style="color:var(--green);font-weight:700;">Find Leads</a>. Select a business type from the suggestions (dental clinic, architect, etc.) and pick a city. Optionally pick a specific area for more focused results.</p>
+        <div class="info i-grn">
+          <strong>Pro tip:</strong> Always add an area (e.g. "Koramangala") — it gives 80–150 focused results instead of scattered ones across the whole city.
+        </div>
+        <div class="steps" style="margin-top:14px;">
+          <div class="step-row"><div class="step-n">1</div><div class="step-body">Tap a <strong>business type chip</strong> (e.g. Dental Clinic)</div></div>
+          <div class="step-row"><div class="step-n">2</div><div class="step-body">Tap your <strong>city</strong> (e.g. Bangalore)</div></div>
+          <div class="step-row"><div class="step-n">3</div><div class="step-body">Tap an <strong>area</strong> (e.g. Koramangala) — shown automatically</div></div>
+          <div class="step-row"><div class="step-n">4</div><div class="step-body">Click <strong>Open in Google Maps</strong> — the search opens in a new tab</div></div>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="card guide-section mb20" id="step2">
+        <h3>⚡ Step 2 — Scrape with Extension</h3>
+        <p>Install the free <strong>Instant Data Scraper</strong> Chrome extension once. Then use it on any Google Maps results page to extract all businesses automatically.</p>
+
+        <a href="https://chrome.google.com/webstore/detail/instant-data-scraper/ofaokhiedipichpaobiifgcelflghiclf" target="_blank" class="btn btn-blk" style="margin-bottom:16px;">Install Instant Data Scraper (Free)</a>
+
+        <div class="steps">
+          <div class="step-row"><div class="step-n">1</div><div class="step-body">On Google Maps, <strong>scroll the left panel slowly</strong> until you see 80–200+ businesses loaded (takes ~30 seconds of scrolling)</div></div>
+          <div class="step-row"><div class="step-n">2</div><div class="step-body">Click the <span class="pill">Instant Data Scraper</span> icon in your Chrome toolbar (top right)</div></div>
+          <div class="step-row"><div class="step-n">3</div><div class="step-body">It auto-detects the business table. Click <span class="pill">Start Crawling</span> — it scrolls and collects everything automatically</div></div>
+          <div class="step-row"><div class="step-n">4</div><div class="step-body">When done, click <span class="pill">Download CSV</span>. Save the file to your desktop.</div></div>
+          <div class="step-row"><div class="step-n">5</div><div class="step-body">Go to <a href="find.html" style="color:var(--green);font-weight:700;">Find Leads → Import CSV</a> and drop the file in. Done.</div></div>
+        </div>
+
+        <div class="info i-org" style="margin-top:12px;">
+          <strong>Expected:</strong> 1 search = 80–150 businesses. Run 10 searches = 800–1500 leads in one hour.
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="card guide-section mb20">
+        <h3>📋 Step 3 — Save and Export Your Best Leads</h3>
+        <p>After importing, use <a href="settings.html" style="color:var(--green);font-weight:700;">Settings</a> to export your full database or only businesses without websites. That keeps your outreach list clean without needing a separate leads page.</p>
+        <div class="steps">
+          <div class="step-row"><div class="step-n">1</div><div class="step-body">Import CSV in <strong>Find Leads</strong> or <strong>Auto Scrape</strong></div></div>
+          <div class="step-row"><div class="step-n">2</div><div class="step-body">Open <strong>Settings</strong> to review database totals</div></div>
+          <div class="step-row"><div class="step-n">3</div><div class="step-body">Click <strong>Export No-Website CSV</strong> to get only businesses without websites</div></div>
+          <div class="step-row"><div class="step-n">4</div><div class="step-body">Use <strong>Export All Leads CSV</strong> anytime for backup or team sharing</div></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div>
+
+      <!-- STEP 4 -->
+      <div class="card guide-section mb20">
+        <h3>📞 Step 4 — Work the Exported List</h3>
+        <p>Use the exported CSV from <a href="settings.html" style="color:var(--green);font-weight:700;">Settings</a> as your call sheet in Excel, Google Sheets, or your team's CRM. The app's job is to find, scrape, import, and export clean lead lists.</p>
+        <div class="steps">
+          <div class="step-row"><div class="step-n">1</div><div class="step-body">Export <strong>No-Website CSV</strong> from Settings for the highest-priority outreach list</div></div>
+          <div class="step-row"><div class="step-n">2</div><div class="step-body">Open the CSV in Excel or Google Sheets</div></div>
+          <div class="step-row"><div class="step-n">3</div><div class="step-body">Call through the list and add your own notes in the sheet or CRM</div></div>
+          <div class="step-row"><div class="step-n">4</div><div class="step-body">Return to LeadTool whenever you want to import fresh batches or export a newer list</div></div>
+        </div>
+      </div>
+
+      <!-- Daily checklist -->
+      <div class="card guide-section mb20">
+        <h3>✅ Daily Employee Checklist</h3>
+        <p>Give this to anyone on your team. They can follow this every day without training.</p>
+        <div class="checklist" id="checklist">
+          <div class="cl-item" onclick="this.classList.toggle('done');this.querySelector('.cl-box').textContent=this.classList.contains('done')?'✓':''"><div class="cl-box"></div><div>Open <strong>Find Leads</strong> → pick a business type + area → open in Maps</div></div>
+          <div class="cl-item" onclick="this.classList.toggle('done');this.querySelector('.cl-box').textContent=this.classList.contains('done')?'✓':''"><div class="cl-box"></div><div>Scroll Maps results until 100+ businesses are loaded</div></div>
+          <div class="cl-item" onclick="this.classList.toggle('done');this.querySelector('.cl-box').textContent=this.classList.contains('done')?'✓':''"><div class="cl-box"></div><div>Run <strong>Instant Data Scraper</strong> → download CSV</div></div>
+          <div class="cl-item" onclick="this.classList.toggle('done');this.querySelector('.cl-box').textContent=this.classList.contains('done')?'✓':''"><div class="cl-box"></div><div>Import CSV into <strong>Find Leads → Import</strong></div></div>
+          <div class="cl-item" onclick="this.classList.toggle('done');this.querySelector('.cl-box').textContent=this.classList.contains('done')?'✓':''"><div class="cl-box"></div><div>Open <strong>Settings</strong> → export <strong>No-Website CSV</strong></div></div>
+          <div class="cl-item" onclick="this.classList.toggle('done');this.querySelector('.cl-box').textContent=this.classList.contains('done')?'✓':''"><div class="cl-box"></div><div>Open the export in Sheets or Excel and work through the list</div></div>
+          <div class="cl-item" onclick="this.classList.toggle('done');this.querySelector('.cl-box').textContent=this.classList.contains('done')?'✓':''"><div class="cl-box"></div><div>Call 10–20 leads and keep notes in your sheet or CRM</div></div>
+          <div class="cl-item" onclick="this.classList.toggle('done');this.querySelector('.cl-box').textContent=this.classList.contains('done')?'✓':''"><div class="cl-box"></div><div>Export a fresh list after each new import batch</div></div>
+        </div>
+      </div>
+
+      <!-- CSV columns guide -->
+      <div class="card guide-section">
+        <h3>📄 What Columns Does the CSV Need?</h3>
+        <p>The tool accepts CSV from Instant Data Scraper, Apify, or any manual export. Column names are detected automatically. Supported columns:</p>
+        <div style="overflow-x:auto;border-radius:var(--r-sm);border:1px solid var(--border);margin-top:8px;">
+          <table style="width:100%;border-collapse:collapse;font-size:13px;">
+            <thead><tr><th>Column Name</th><th>Also Accepts</th><th>Required?</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Business Name</strong></td><td>name, title</td><td style="color:var(--red);">Yes</td></tr>
+              <tr><td>Category</td><td>type</td><td style="color:var(--ink3);">Optional</td></tr>
+              <tr><td>Phone</td><td>phone number, contact</td><td style="color:var(--ink3);">Optional</td></tr>
+              <tr><td>Address</td><td>location</td><td style="color:var(--ink3);">Optional</td></tr>
+              <tr><td>Reviews</td><td>total reviews, review count</td><td style="color:var(--ink3);">Optional</td></tr>
+              <tr><td>Website</td><td>—</td><td style="color:var(--ink3);">Optional</td></tr>
+              <tr><td>Maps URL</td><td>maps link, url</td><td style="color:var(--ink3);">Optional</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="info i-yel" style="margin-top:12px;">
+          <strong>Instant Data Scraper</strong> usually exports: Title, Address, Phone, Rating, Website, URL — all of these map correctly automatically.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+</div>
+<div id="toast"></div>
+<script src="js/store.js"></script>
+</body>
+</html>
