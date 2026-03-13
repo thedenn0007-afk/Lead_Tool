@@ -1,0 +1,15 @@
+{
+  "name": "leadtool-local-helper",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local Playwright runner for LeadTool",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "postinstall": "playwright install chromium"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "playwright": "^1.54.0"
+  }
+}

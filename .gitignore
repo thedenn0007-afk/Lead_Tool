@@ -1,2 +1,4 @@
 *.csv
-
+local-helper/node_modules/
+local-helper/dist/
+local-helper/tmp/
