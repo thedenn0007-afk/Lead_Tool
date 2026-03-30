@@ -440,7 +440,7 @@ tr:hover td { background: #fafafa; }
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
   .sidebar { width: 56px; }
-  .sidebar-logo h1 span, .sidebar-logo p, .nav a span, .nav-section, .sidebar-footer { display: none; }
+  .sidebar-logo h1 span, .sidebar-logo p, .nav a span:not(.ico), .nav-section, .sidebar-footer { display: none; }
   .main { margin-left: 56px; padding: 20px 16px 60px; }
   .g2, .g3, .g4 { grid-template-columns: 1fr; }
 }

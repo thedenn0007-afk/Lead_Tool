@@ -1,8 +1,23 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>LeadTool - Find Leads</title>
+<meta name="description" content="Find and organize local business leads quickly by business type, city, and specific area.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://leadtool.app/find.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="LeadTool - Find Leads">
+<meta property="og:description" content="Build targeted local business lead lists and export them instantly.">
+<meta property="og:url" content="https://leadtool.app/find.html">
+<meta property="og:image" content="https://leadtool.app/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="LeadTool - Find Leads">
+<meta name="twitter:description" content="Build targeted local business lead lists and export them instantly.">
+<meta name="twitter:image" content="https://leadtool.app/og-image.png">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"LeadTool","applicationCategory":"BusinessApplication","operatingSystem":"Web","url":"https://leadtool.app/find.html"}
+</script>
 <link rel="stylesheet" href="css/style.css">
 <style>
 .import-zone {
@@ -84,6 +99,33 @@
   transition: width .25s;
 }
 .mono { font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+.group-list { display: flex; flex-direction: column; gap: 8px; margin-top: 6px; }
+.group {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #fff;
+  overflow: hidden;
+}
+.group > summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 10px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink2);
+  background: #f7f8fb;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.group > summary::-webkit-details-marker { display: none; }
+.group > summary::after {
+  content: '+';
+  font-weight: 800;
+  color: var(--ink3);
+}
+.group[open] > summary::after { content: '-'; }
+.group-body { padding: 8px; display: flex; gap: 8px; flex-wrap: wrap; }
 </style>
 </head>
 <body>
@@ -118,62 +160,39 @@
         <div class="card-sub">Fill in the fields below. Suggestions appear at every step.</div>
 
         <div class="field">
-          <div class="label">Business type <span class="req">required</span></div>
-          <input id="bizType" style="width:100%;padding:12px 15px;border:2px solid var(--border);border-radius:var(--r-sm);font-size:14px;font-family:Outfit,sans-serif;color:var(--ink);background:#fafafa;outline:none;transition:border-color .13s;" placeholder="e.g. dental clinic, architect..." oninput="updateQ()" autocomplete="off">
+          <label class="label" for="bizType">Business type <span class="req">required</span></label>
+          <input id="bizType" list="bizSuggestions" style="width:100%;padding:12px 15px;border:2px solid var(--border);border-radius:var(--r-sm);font-size:14px;font-family:Outfit,sans-serif;color:var(--ink);background:#fafafa;outline:none;transition:border-color .13s;" placeholder="e.g. dental clinic, architect..." oninput="updateQ()" autocomplete="off">
+          <datalist id="bizSuggestions"></datalist>
           <p class="hint">Be specific - "dental clinic" works better than just "clinic"</p>
           <div class="chips" id="bizChips">
             <div class="chips-label">Tap to fill &rarr;</div>
-            <span class="chip" onclick="setBiz('Dental Clinic')">Dental Clinic</span>
-            <span class="chip" onclick="setBiz('Dermatology Clinic')">Dermatology</span>
-            <span class="chip" onclick="setBiz('Architect')">Architect</span>
-            <span class="chip" onclick="setBiz('Visa Consultant')">Visa Consultant</span>
-            <span class="chip" onclick="setBiz('Interior Designer')">Interior Designer</span>
-            <span class="chip" onclick="setBiz('CA Firm')">CA Firm</span>
-            <span class="chip" onclick="setBiz('Law Firm')">Law Firm</span>
-            <span class="chip" onclick="setBiz('Yoga Studio')">Yoga Studio</span>
-            <span class="chip" onclick="setBiz('Photography Studio')">Photography</span>
-            <span class="chip" onclick="setBiz('Event Planner')">Event Planner</span>
-            <span class="chip" onclick="setBiz('Physiotherapy Clinic')">Physiotherapy</span>
-            <span class="chip" onclick="setBiz('Coaching Centre')">Coaching</span>
-            <span class="chip" onclick="setBiz('Jewellery Shop')">Jewellery</span>
-            <span class="chip" onclick="setBiz('Real Estate Agent')">Real Estate</span>
-            <span class="chip" onclick="setBiz('Catering Service')">Catering</span>
-            <span class="chip" onclick="setBiz('Driving School')">Driving School</span>
-            <span class="chip" onclick="setBiz('Florist')">Florist</span>
-            <span class="chip" onclick="setBiz('Gym')">Gym</span>
-            <span class="chip" onclick="setBiz('Travel Agent')">Travel Agent</span>
-            <span class="chip" onclick="setBiz('Wedding Photographer')">Wedding Photo</span>
-            <span class="chip" onclick="setBiz('Ayurveda Clinic')">Ayurveda</span>
-            <span class="chip" onclick="setBiz('Pest Control')">Pest Control</span>
-            <span class="chip" onclick="setBiz('Tuition Centre')">Tuition</span>
-            <span class="chip" onclick="setBiz('Boutique')">Boutique</span>
-            <span class="chip" onclick="setBiz('Salon')">Salon</span>
           </div>
         </div>
 
         <div class="field">
-          <div class="label">City <span class="req">required</span></div>
+          <label class="label" for="city">City <span class="req">required</span></label>
           <input id="city" style="width:100%;padding:12px 15px;border:2px solid var(--border);border-radius:var(--r-sm);font-size:14px;font-family:Outfit,sans-serif;color:var(--ink);background:#fafafa;outline:none;transition:border-color .13s;" placeholder="e.g. Bangalore, Mumbai, Delhi..." oninput="updateQ();updateAreas()" autocomplete="off">
           <div class="chips" id="cityChips">
             <div class="chips-label">Popular &rarr;</div>
-            <span class="chip" onclick="setCity('Bangalore')">Bangalore</span>
-            <span class="chip" onclick="setCity('Mumbai')">Mumbai</span>
-            <span class="chip" onclick="setCity('Delhi')">Delhi</span>
-            <span class="chip" onclick="setCity('Chennai')">Chennai</span>
-            <span class="chip" onclick="setCity('Hyderabad')">Hyderabad</span>
-            <span class="chip" onclick="setCity('Pune')">Pune</span>
-            <span class="chip" onclick="setCity('Kolkata')">Kolkata</span>
-            <span class="chip" onclick="setCity('Ahmedabad')">Ahmedabad</span>
-            <span class="chip" onclick="setCity('Jaipur')">Jaipur</span>
-            <span class="chip" onclick="setCity('Kochi')">Kochi</span>
-            <span class="chip" onclick="setCity('Coimbatore')">Coimbatore</span>
-            <span class="chip" onclick="setCity('Surat')">Surat</span>
+            <button type="button" class="chip" onclick="setCity('Bangalore')">Bangalore</button>
+            <button type="button" class="chip" onclick="setCity('Mumbai')">Mumbai</button>
+            <button type="button" class="chip" onclick="setCity('Delhi')">Delhi</button>
+            <button type="button" class="chip" onclick="setCity('Chennai')">Chennai</button>
+            <button type="button" class="chip" onclick="setCity('Hyderabad')">Hyderabad</button>
+            <button type="button" class="chip" onclick="setCity('Pune')">Pune</button>
+            <button type="button" class="chip" onclick="setCity('Kolkata')">Kolkata</button>
+            <button type="button" class="chip" onclick="setCity('Ahmedabad')">Ahmedabad</button>
+            <button type="button" class="chip" onclick="setCity('Jaipur')">Jaipur</button>
+            <button type="button" class="chip" onclick="setCity('Kochi')">Kochi</button>
+            <button type="button" class="chip" onclick="setCity('Coimbatore')">Coimbatore</button>
+            <button type="button" class="chip" onclick="setCity('Surat')">Surat</button>
           </div>
         </div>
 
         <div class="field">
-          <div class="label">Specific area <span class="opt">(optional - but gives better results)</span></div>
-          <input id="area" style="width:100%;padding:12px 15px;border:2px solid var(--border);border-radius:var(--r-sm);font-size:14px;font-family:Outfit,sans-serif;color:var(--ink);background:#fafafa;outline:none;transition:border-color .13s;" placeholder="e.g. Koramangala, Indiranagar..." oninput="updateQ()" autocomplete="off">
+          <label class="label" for="area">Specific area <span class="opt">(optional - but gives better results)</span></label>
+          <input id="area" list="areaSuggestions" style="width:100%;padding:12px 15px;border:2px solid var(--border);border-radius:var(--r-sm);font-size:14px;font-family:Outfit,sans-serif;color:var(--ink);background:#fafafa;outline:none;transition:border-color .13s;" placeholder="e.g. Koramangala, Indiranagar..." oninput="updateQ()" autocomplete="off">
+          <datalist id="areaSuggestions"></datalist>
           <p class="hint">Searching by area gives 80-150 focused results instead of scattered ones across the whole city</p>
           <div class="chips" id="areaChips" style="display:none;"></div>
         </div>
@@ -183,7 +202,7 @@
             <div class="ql">Your Google Maps search query</div>
             <div class="qv" id="qText">-</div>
           </div>
-          <a id="mapsBtn" href="#" target="_blank" class="maps-btn" onclick="logSearch()">
+          <a id="mapsBtn" href="#" target="_blank" rel="noopener noreferrer" class="maps-btn" onclick="logSearch()">
             Open in Google Maps
           </a>
           <div class="info i-grn" style="margin-top:10px;">
@@ -211,7 +230,7 @@
             <div class="ext-title">Instant Data Scraper</div>
             <div class="ext-sub">Free Chrome extension &#183; Auto-detects tables &#183; 1-click export</div>
           </div>
-          <a class="ext-link" href="https://chrome.google.com/webstore/detail/instant-data-scraper/ofaokhiedipichpaobiifgcelflghiclf" target="_blank">Install Free &rarr;</a>
+          <a class="ext-link" href="https://chrome.google.com/webstore/detail/instant-data-scraper/ofaokhiedipichpaobiifgcelflghiclf" target="_blank" rel="noopener noreferrer">Install Free &rarr;</a>
         </div>
 
         <div class="steps">
@@ -256,7 +275,7 @@
             <button class="btn btn-out btn-sm" onclick="checkHelper()">Check Helper</button>
             <button class="btn btn-blk btn-sm" id="runLocalBtn" onclick="startLocalScrape()">Run Local Scrape</button>
             <button class="btn btn-out btn-sm" onclick="cancelLocalScrape()">Cancel</button>
-            <a href="local-helper/README.md" target="_blank" class="btn btn-out btn-sm">Helper Setup</a>
+            <a href="local-helper/README.md" target="_blank" rel="noopener noreferrer" class="btn btn-out btn-sm">Helper Setup</a>
           </div>
 
           <div class="info i-yel" style="margin-top:12px;">
@@ -309,14 +328,14 @@
       <div class="card">
         <div class="card-title mb16">Or Add One Business Manually</div>
         <div class="g2" style="gap:12px;">
-          <div class="field" style="margin:0;"><div class="label">Business Name <span class="req">*</span></div><input id="mName" placeholder="e.g. SkinGlow Clinic"></div>
-          <div class="field" style="margin:0;"><div class="label">Category</div><input id="mCat" placeholder="e.g. Dermatology"></div>
-          <div class="field" style="margin:0;"><div class="label">Phone</div><input id="mPhone" placeholder="+91 98765 43210"></div>
-          <div class="field" style="margin:0;"><div class="label">Area</div><input id="mArea" placeholder="e.g. Koramangala"></div>
-          <div class="field" style="margin:0;"><div class="label">Reviews count</div><input id="mReviews" type="number" placeholder="e.g. 45"></div>
-          <div class="field" style="margin:0;"><div class="label">Website <span class="opt">(blank = no website)</span></div><input id="mWebsite" placeholder="Leave blank if none"></div>
+          <div class="field" style="margin:0;"><label class="label" for="mName">Business Name <span class="req">*</span></label><input id="mName" placeholder="e.g. SkinGlow Clinic"></div>
+          <div class="field" style="margin:0;"><label class="label" for="mCat">Category</label><input id="mCat" placeholder="e.g. Dermatology"></div>
+          <div class="field" style="margin:0;"><label class="label" for="mPhone">Phone</label><input id="mPhone" placeholder="+91 98765 43210"></div>
+          <div class="field" style="margin:0;"><label class="label" for="mArea">Area</label><input id="mArea" placeholder="e.g. Koramangala"></div>
+          <div class="field" style="margin:0;"><label class="label" for="mReviews">Reviews count</label><input id="mReviews" type="number" placeholder="e.g. 45"></div>
+          <div class="field" style="margin:0;"><label class="label" for="mWebsite">Website <span class="opt">(blank = no website)</span></label><input id="mWebsite" placeholder="Leave blank if none"></div>
         </div>
-        <div class="field" style="margin-top:12px;"><div class="label">Google Maps URL</div><input id="mMaps" placeholder="Paste Maps link here"></div>
+        <div class="field" style="margin-top:12px;"><label class="label" for="mMaps">Google Maps URL</label><input id="mMaps" placeholder="Paste Maps link here"></div>
         <button class="btn btn-grn btn-full" style="margin-top:4px;" onclick="manualAdd()">Add to Database</button>
       </div>
     </div>
@@ -324,22 +343,75 @@
 </main>
 </div>
 <div id="toast"></div>
+<script src="js/analytics.js"></script>
 <script src="js/store.js"></script>
 <script>
-const AREAS = {
-  bangalore:['Koramangala','Indiranagar','HSR Layout','Jayanagar','Whitefield','JP Nagar','BTM Layout','MG Road','Marathahalli','Electronic City','Rajajinagar','Malleshwaram','Bannerghatta Road','Sarjapur Road','Yelahanka'],
-  mumbai:['Andheri','Bandra','Juhu','Powai','Thane','Borivali','Dadar','Kurla','Malad','Goregaon'],
-  delhi:['Connaught Place','Lajpat Nagar','Karol Bagh','Dwarka','Rohini','Pitampura','Saket','Vasant Kunj'],
-  chennai:['Anna Nagar','T Nagar','Velachery','Adyar','Porur','Tambaram','OMR','Nungambakkam'],
-  hyderabad:['Banjara Hills','Jubilee Hills','Madhapur','Gachibowli','Kukatpally','Secunderabad','Hitech City'],
-  pune:['Koregaon Park','Kothrud','Baner','Aundh','Hadapsar','Viman Nagar','Wakad'],
+const BIZ_TYPES = [
+  'Dental Clinic','Dermatology Clinic','Skin Clinic','Hair Transplant Clinic','Plastic Surgeon',
+  'Physiotherapy Clinic','Orthopedic Clinic','Pediatric Clinic','ENT Clinic','Eye Hospital',
+  'Diagnostic Centre','Pathology Lab','Ayurveda Clinic','Homeopathy Clinic','Psychologist',
+  'Psychiatrist','Nutritionist','Gym','Yoga Studio','Pilates Studio',
+  'Salon','Spa','Nail Studio','Tattoo Studio','Beauty Parlour',
+  'Law Firm','CA Firm','Tax Consultant','GST Consultant','Company Secretary',
+  'Architect','Interior Designer','Civil Contractor','Real Estate Agent','Property Consultant',
+  'Travel Agent','Visa Consultant','Immigration Consultant','Tour Operator','Event Planner',
+  'Wedding Planner','Wedding Photographer','Photography Studio','Videographer','Catering Service',
+  'Bakery','Restaurant','Cafe','Cloud Kitchen','Sweet Shop',
+  'Tuition Centre','Coaching Centre','EdTech Institute','Computer Training Institute','Language Institute',
+  'Driving School','Dance Academy','Music School','Art School','Play School',
+  'Boutique','Jewellery Shop','Mobile Repair Shop','Electronics Store','Gift Shop',
+  'Pest Control','Cleaning Service','Packers and Movers','Car Rental','Courier Service'
+];
+
+const BIZ_GROUPS = {
+  'Healthcare & Wellness': [
+    'Dental Clinic','Dermatology Clinic','Skin Clinic','Hair Transplant Clinic','Plastic Surgeon',
+    'Physiotherapy Clinic','Orthopedic Clinic','Pediatric Clinic','ENT Clinic','Eye Hospital',
+    'Diagnostic Centre','Pathology Lab','Ayurveda Clinic','Homeopathy Clinic','Psychologist',
+    'Psychiatrist','Nutritionist','Gym','Yoga Studio','Pilates Studio'
+  ],
+  'Beauty & Personal Care': ['Salon','Spa','Nail Studio','Tattoo Studio','Beauty Parlour'],
+  'Legal & Finance': ['Law Firm','CA Firm','Tax Consultant','GST Consultant','Company Secretary'],
+  'Design, Build & Property': ['Architect','Interior Designer','Civil Contractor','Real Estate Agent','Property Consultant'],
+  'Travel, Events & Media': ['Travel Agent','Visa Consultant','Immigration Consultant','Tour Operator','Event Planner','Wedding Planner','Wedding Photographer','Photography Studio','Videographer'],
+  'Food & Hospitality': ['Catering Service','Bakery','Restaurant','Cafe','Cloud Kitchen','Sweet Shop'],
+  'Education & Training': ['Tuition Centre','Coaching Centre','EdTech Institute','Computer Training Institute','Language Institute','Driving School','Dance Academy','Music School','Art School','Play School'],
+  'Retail & Local Services': ['Boutique','Jewellery Shop','Mobile Repair Shop','Electronics Store','Gift Shop','Pest Control','Cleaning Service','Packers and Movers','Car Rental','Courier Service']
 };
 
-const BATCH_NICHES = ['dental clinic','dermatology clinic','architect','visa consultant','interior designer','CA firm','law firm','yoga studio','photography studio','event planner'];
+const AREAS = {
+  bangalore:[
+    'Koramangala','Indiranagar','HSR Layout','Jayanagar','Whitefield','JP Nagar','BTM Layout','MG Road','Marathahalli',
+    'Electronic City','Rajajinagar','Malleshwaram','Bannerghatta Road','Sarjapur Road','Yelahanka','Hebbal','Bellandur',
+    'Kalyan Nagar','Kammanahalli','Kammanhalli','Horamavu','Hormavu','Hennur','Hennur Road','Banaswadi','Ramamurthy Nagar','CV Raman Nagar',
+    'Mahadevapura','KR Puram','Kadugodi','Brookefield','AECS Layout','Doddanekkundi','Varthur','Panathur','Kadubeesanahalli',
+    'Kundalahalli','ITPL','Nagawara','Manyata Tech Park','Thanisandra','Thanisandra Main Road','RT Nagar','Sahakara Nagar',
+    'Sanjay Nagar','Mathikere','Vidyaranyapura','Jalahalli','Peenya','Yeshwanthpur','Vijayanagar','Nagarbhavi',
+    'Basaveshwar Nagar','Magadi Road','Kengeri','RR Nagar','Mysore Road','Banashankari','Basavanagudi','Girinagar',
+    'Uttarahalli','Padmanabhanagar','Kumaraswamy Layout','J P Nagar 7th Phase','Arekere','Begur Road','Bommanahalli',
+    'Singasandra','Hosur Road','Silk Board','Madiwala','Domlur','Ulsoor','HAL 2nd Stage','Murugeshpalya','Jeevan Bhima Nagar',
+    'Cox Town','Frazer Town','Cooke Town','Richmond Town','Shivajinagar','Chickpet','Majestic','Wilson Garden','Seshadripuram'
+  ],
+  mumbai:['Andheri','Bandra','Juhu','Powai','Thane','Borivali','Dadar','Kurla','Malad','Goregaon','Lower Parel','Worli','Chembur','Mulund','Kandivali','Vile Parle','Sion','Ghatkopar','Colaba','Byculla'],
+  delhi:['Connaught Place','Lajpat Nagar','Karol Bagh','Dwarka','Rohini','Pitampura','Saket','Vasant Kunj','Janakpuri','Rajouri Garden','Kalkaji','Greater Kailash','Nehru Place','Model Town','Paschim Vihar'],
+  chennai:['Anna Nagar','T Nagar','Velachery','Adyar','Porur','Tambaram','OMR','Nungambakkam','Mylapore','Chromepet','Perungudi','Sholinganallur','Guindy','Vadapalani','Egmore'],
+  hyderabad:['Banjara Hills','Jubilee Hills','Madhapur','Gachibowli','Kukatpally','Secunderabad','Hitech City','Begumpet','Manikonda','Miyapur','Ameerpet','Kondapur','Uppal','LB Nagar','Dilsukhnagar'],
+  pune:['Koregaon Park','Kothrud','Baner','Aundh','Hadapsar','Viman Nagar','Wakad','Hinjewadi','Kharadi','Pimpri','Chinchwad','Magarpatta','Pashan','Camp','Karve Nagar'],
+  kolkata:['Salt Lake','New Town','Park Street','Ballygunge','Garia','Tollygunge','Dum Dum','Howrah','Behala','Rajarhat','Alipore','Jadavpur','Kasba','Shyambazar','Lake Town'],
+  ahmedabad:['Navrangpura','Satellite','Bopal','Maninagar','Vastrapur','Naranpura','Paldi','Thaltej','Prahlad Nagar','SG Highway','Chandkheda','Nikol','Gota','Bodakdev','Sabarmati'],
+  jaipur:['Malviya Nagar','Vaishali Nagar','Mansarovar','C Scheme','Raja Park','Tonk Road','Jagatpura','Vidhyadhar Nagar','MI Road','Bani Park','Shyam Nagar','Sodala'],
+  kochi:['Kakkanad','Edappally','Kadavanthra','Panampilly Nagar','Vyttila','Aluva','Fort Kochi','Kaloor','Palarivattom','Thrippunithura','Marine Drive','Thevara'],
+  coimbatore:['RS Puram','Saibaba Colony','Peelamedu','Gandhipuram','Singanallur','Ramanathapuram','Race Course','Saravanampatti','Sundarapuram','Ganapathy','Hope College','Ukkadam'],
+  surat:['Adajan','Vesu','Athwa','Varachha','Katargam','Piplod','Udhna','Pal','Parle Point','City Light','Bhatar','Dumas Road']
+};
+
+const BATCH_NICHES = ['dental clinic','dermatology clinic','physiotherapy clinic','architect','visa consultant','interior designer','CA firm','law firm','yoga studio','photography studio','event planner','salon'];
 const HELPER_BASE = 'http://127.0.0.1:47831';
 
 let localJobId = null;
 let localPoll = null;
+let helperToken = '';
+let lastTrackedQuery = '';
 
 function helperErrorMessage(error, fallback) {
   const text = String(error && (error.message || error) || '');
@@ -352,7 +424,13 @@ function helperErrorMessage(error, fallback) {
   if (text.includes('CORS')) {
     return 'Browser blocked the helper connection. Restart the helper and reload this page.';
   }
-  return fallback || text || 'Unknown helper error';
+  if (text.includes('Unauthorized helper request')) {
+    return 'Helper auth failed. Click Check Helper again, then retry Run Local Scrape.';
+  }
+  if (text.includes('Origin not allowed')) {
+    return 'This page origin is not trusted by local-helper. Open LeadTool from localhost or add your origin to LEADTOOL_ALLOWED_ORIGINS.';
+  }
+  return text || fallback || 'Unknown helper error';
 }
 
 function getQ() {
@@ -375,12 +453,16 @@ function updateQ() {
   document.getElementById('qText').textContent = q;
   document.getElementById('localQueryText').textContent = q;
   document.getElementById('mapsBtn').href = `https://www.google.com/maps/search/${encodeURIComponent(q)}`;
+  if (window.track && q !== lastTrackedQuery) {
+    track('query_built', { query: q });
+    lastTrackedQuery = q;
+  }
   updatePyCmd();
 }
 
 function setBiz(v) {
   document.getElementById('bizType').value = v;
-  document.querySelectorAll('#bizChips .chip').forEach((chip) => chip.classList.toggle('on', chip.textContent.trim().endsWith(v)));
+  document.querySelectorAll('#bizChips .chip[data-value]').forEach((chip) => chip.classList.toggle('on', chip.dataset.value === v));
   updateQ();
 }
 
@@ -393,20 +475,110 @@ function setCity(v) {
 
 function setArea(v) {
   document.getElementById('area').value = v;
+  document.querySelectorAll('#areaChips .chip[data-value]').forEach((chip) => chip.classList.toggle('on', chip.dataset.value === v));
   updateQ();
+}
+
+function escapeHtml(text) {
+  return String(text || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function alphaGroupTitle(value) {
+  const t = String(value || '').trim().toUpperCase();
+  const c = t[0] || '';
+  if (c >= 'A' && c <= 'D') return 'A-D';
+  if (c >= 'E' && c <= 'H') return 'E-H';
+  if (c >= 'I' && c <= 'L') return 'I-L';
+  if (c >= 'M' && c <= 'P') return 'M-P';
+  if (c >= 'Q' && c <= 'T') return 'Q-T';
+  if (c >= 'U' && c <= 'Z') return 'U-Z';
+  return 'Other';
+}
+
+function buildAreaGroups(areas) {
+  const order = ['A-D', 'E-H', 'I-L', 'M-P', 'Q-T', 'U-Z', 'Other'];
+  const map = {};
+  order.forEach((label) => { map[label] = []; });
+  areas.forEach((area) => {
+    map[alphaGroupTitle(area)].push(area);
+  });
+  return order
+    .filter((label) => map[label].length)
+    .map((label) => ({ title: label, items: map[label] }));
+}
+
+function renderGroupedChips(containerId, groups, onClickFn, selectedValue = '') {
+  const wrap = document.getElementById(containerId);
+  wrap.innerHTML = '';
+  groups.forEach((group, index) => {
+    const details = document.createElement('details');
+    details.className = 'group';
+    if (index < 2) details.open = true;
+
+    const summary = document.createElement('summary');
+    summary.textContent = `${group.title} ${group.items.length}`;
+    details.appendChild(summary);
+
+    const body = document.createElement('div');
+    body.className = 'group-body';
+    group.items.forEach((value) => {
+      const chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = `chip${selectedValue === value ? ' on' : ''}`;
+      chip.dataset.value = value;
+      chip.textContent = value;
+      chip.addEventListener('click', () => {
+        if (onClickFn === 'setArea') setArea(value);
+        else setBiz(value);
+      });
+      body.appendChild(chip);
+    });
+
+    details.appendChild(body);
+    wrap.appendChild(details);
+  });
 }
 
 function updateAreas() {
   const city = (document.getElementById('city').value || '').toLowerCase().trim();
   const areas = AREAS[city] || [];
   const wrap = document.getElementById('areaChips');
+  const areaSuggestions = document.getElementById('areaSuggestions');
+  areaSuggestions.replaceChildren(...areas.map((area) => {
+    const option = document.createElement('option');
+    option.value = area;
+    return option;
+  }));
   if (!areas.length) {
     wrap.style.display = 'none';
     return;
   }
   wrap.style.display = '';
-  wrap.innerHTML = `<div class="chips-label">Areas in ${document.getElementById('city').value} &rarr;</div>` +
-    areas.map((area) => `<span class="chip" onclick="setArea('${area}')">${area}</span>`).join('');
+  const groups = buildAreaGroups(areas);
+  const selected = (document.getElementById('area').value || '').trim();
+  const cityLabel = document.getElementById('city').value || '';
+  wrap.innerHTML = '<div class="chips-label" id="areaLabel"></div><div class="group-list" id="areaGroupList"></div>';
+  document.getElementById('areaLabel').textContent = `Areas in ${cityLabel} (grouped) ->`;
+  renderGroupedChips('areaGroupList', groups, 'setArea', selected);
+}
+
+function renderBizOptions() {
+  const list = document.getElementById('bizSuggestions');
+  list.replaceChildren(...BIZ_TYPES.map((biz) => {
+    const option = document.createElement('option');
+    option.value = biz;
+    return option;
+  }));
+  const groups = Object.entries(BIZ_GROUPS).map(([title, items]) => ({ title, items }));
+  const selected = (document.getElementById('bizType').value || '').trim();
+  const wrap = document.getElementById('bizChips');
+  wrap.innerHTML = '<div class="chips-label">Tap to fill (grouped) -></div><div class="group-list" id="bizGroupList"></div>';
+  renderGroupedChips('bizGroupList', groups, 'setBiz', selected);
 }
 
 function updatePyCmd() {
@@ -421,17 +593,41 @@ function copyPyCmd() {
 
 function logSearch() {
   const q = getQ();
-  if (q) Store.addSearch(q);
+  if (q) {
+    Store.addSearch(q);
+    if (window.track) track('maps_opened', { query: q });
+  }
 }
 
 function renderBatch() {
   const city = (document.getElementById('city').value || 'Bangalore').trim();
-  document.getElementById('batchList').innerHTML = BATCH_NICHES.map((niche, index) => `
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:#fafafa;border:1px solid var(--border);border-radius:8px;font-size:13px;">
-      <span style="color:var(--ink2);">${index + 1}. ${niche} ${city}</span>
-      <button class="btn btn-out btn-sm" onclick="openOne('${niche} ${city}')">Open</button>
-    </div>
-  `).join('');
+  const list = document.getElementById('batchList');
+  list.innerHTML = '';
+  BATCH_NICHES.forEach((niche, index) => {
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:#fafafa;border:1px solid var(--border);border-radius:8px;font-size:13px;';
+
+    const label = document.createElement('span');
+    label.style.color = 'var(--ink2)';
+    const q = `${niche} ${city}`;
+    label.textContent = `${index + 1}. ${q}`;
+
+    const btn = document.createElement('button');
+    btn.className = 'btn btn-out btn-sm';
+    btn.type = 'button';
+    btn.textContent = 'Open';
+    btn.addEventListener('click', () => openOne(q));
+
+    row.appendChild(label);
+    row.appendChild(btn);
+    list.appendChild(row);
+  });
+}
+
+function helperFetch(path, options = {}) {
+  const headers = { ...(options.headers || {}) };
+  if (helperToken) headers['X-Leadtool-Token'] = helperToken;
+  return fetch(`${HELPER_BASE}${path}`, { ...options, headers });
 }
 
 function openOne(query) {
@@ -464,6 +660,10 @@ async function checkHelper() {
     const res = await fetch(`${HELPER_BASE}/health`);
     if (!res.ok) throw new Error('Health check failed');
     const data = await res.json();
+    helperToken = String(data.token || '');
+    if (data.requiresAuth && !helperToken) {
+      throw new Error('Helper auth token missing from health response');
+    }
     setHelperStatus(`Helper ready: ${data.app} v${data.version}`, 'ok');
     toast('Local helper connected');
   } catch (error) {
@@ -486,7 +686,11 @@ async function startLocalScrape() {
   setLocalProgress(3, 'Sending job to helper', 0);
 
   try {
-    const res = await fetch(`${HELPER_BASE}/scrapes`, {
+    if (!helperToken) {
+      await checkHelper();
+      if (!helperToken) throw new Error('Local helper auth token not available');
+    }
+    const res = await helperFetch('/scrapes', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ businessType, city, area, query, maxResults: 200, downloadMode: 'browser-download' })
@@ -494,6 +698,7 @@ async function startLocalScrape() {
     const data = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(data.error || 'Failed to start local scrape');
     localJobId = data.jobId;
+    if (window.track) track('local_scrape_started', { query, city, area, businessType });
     setHelperStatus('Local scrape running in helper.', 'ok');
     pollLocalJob();
   } catch (error) {
@@ -507,20 +712,29 @@ async function pollLocalJob() {
   if (!localJobId) return;
   clearTimeout(localPoll);
   try {
-    const res = await fetch(`${HELPER_BASE}/scrapes/${localJobId}`);
+    const res = await helperFetch(`/scrapes/${localJobId}`);
     const data = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(data.error || 'Could not read job');
     setLocalProgress(data.progressPercent || 0, data.message || data.status, data.rowsFound || 0);
 
     if (data.status === 'succeeded') {
+      if (window.track) track('local_scrape_succeeded', { rows: data.rowsFound || 0 });
       setHelperStatus('Local scrape finished. Starting CSV download...', 'ok');
       document.getElementById('runLocalBtn').disabled = false;
-      window.location.href = `${HELPER_BASE}${data.downloadUrl}`;
+      const dlRes = await helperFetch(data.downloadUrl);
+      if (!dlRes.ok) throw new Error('Could not download CSV from helper');
+      const blob = await dlRes.blob();
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `leads-${new Date().toISOString().slice(0, 10)}.csv`;
+      a.click();
+      URL.revokeObjectURL(a.href);
       localJobId = null;
       return;
     }
 
     if (['failed', 'cancelled'].includes(data.status)) {
+      if (window.track) track('local_scrape_failed', { status: data.status, error: data.error || '' });
       setHelperStatus(data.error || data.message || 'Local scrape stopped.', 'err');
       document.getElementById('runLocalBtn').disabled = false;
       localJobId = null;
@@ -529,6 +743,7 @@ async function pollLocalJob() {
 
     localPoll = setTimeout(pollLocalJob, 2000);
   } catch (error) {
+    if (window.track) track('local_scrape_failed', { error: String(error?.message || error || 'unknown') });
     setHelperStatus(helperErrorMessage(error, 'Lost connection to helper while polling job.'), 'err');
     document.getElementById('runLocalBtn').disabled = false;
   }
@@ -540,16 +755,18 @@ async function cancelLocalScrape() {
     return;
   }
   try {
-    await fetch(`${HELPER_BASE}/scrapes/${localJobId}/cancel`, { method: 'POST' });
+    await helperFetch(`/scrapes/${localJobId}/cancel`, { method: 'POST' });
   } catch (error) {}
   clearTimeout(localPoll);
   localJobId = null;
   document.getElementById('runLocalBtn').disabled = false;
   setHelperStatus('Local scrape cancelled.', 'warn');
   setLocalProgress(0, 'Cancelled', 0);
+  if (window.track) track('local_scrape_cancelled');
 }
 
 function importFile(inp, mode = 'merge') {
+  if (mode === 'replace' && !confirm('Replace will delete all existing leads. Continue?')) return;
   const file = inp && inp.files ? inp.files[0] : inp;
   if (!file) {
     toast('Choose a CSV file first');
@@ -559,6 +776,7 @@ function importFile(inp, mode = 'merge') {
   reader.onload = (event) => {
     const result = Store.importCSV(event.target.result, mode);
     if (result.imported > 0) {
+      if (window.track) track('csv_imported', { mode, imported: result.imported, skipped: result.skipped || 0 });
       toast(`Imported ${result.imported} leads${result.skipped ? `, skipped ${result.skipped} duplicates` : ''}`);
     }
   };
@@ -574,6 +792,7 @@ function importPaste() {
   const result = Store.importCSV(text, 'merge');
   document.getElementById('csvPaste').value = '';
   if (result.imported > 0) {
+    if (window.track) track('csv_imported', { mode: 'merge', imported: result.imported, skipped: result.skipped || 0, source: 'paste' });
     toast(`Imported ${result.imported} leads${result.skipped ? `, skipped ${result.skipped} duplicates` : ''}`);
   }
 }
@@ -596,6 +815,7 @@ function manualAdd() {
     source: 'manual',
   });
   toast(`"${name}" added!`);
+  if (window.track) track('manual_lead_added', { name });
   ['mName', 'mCat', 'mPhone', 'mArea', 'mReviews', 'mWebsite', 'mMaps'].forEach((id) => {
     document.getElementById(id).value = '';
   });
@@ -620,10 +840,15 @@ dz.addEventListener('drop', (event) => {
   }
 });
 
+renderBizOptions();
 renderBatch();
+updateAreas();
 updatePyCmd();
 setLocalProgress(0, 'Idle', 0);
 document.getElementById('city').addEventListener('input', renderBatch);
+if (window.track) track('page_view', { page: 'find' });
 </script>
 </body>
 </html>
+
+

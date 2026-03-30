@@ -3,6 +3,21 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>LeadTool — Settings</title>
+<meta name="description" content="Manage LeadTool data, exports, imports, and workspace settings.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://leadtool.app/settings.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="LeadTool - Settings">
+<meta property="og:description" content="Manage exports, imports, and data safety controls.">
+<meta property="og:url" content="https://leadtool.app/settings.html">
+<meta property="og:image" content="https://leadtool.app/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="LeadTool - Settings">
+<meta name="twitter:description" content="Manage exports, imports, and data safety controls.">
+<meta name="twitter:image" content="https://leadtool.app/og-image.png">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"LeadTool","applicationCategory":"BusinessApplication","operatingSystem":"Web","url":"https://leadtool.app/settings.html"}
+</script>
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -80,7 +95,7 @@
           <p><strong>Deploy free:</strong> Drop the folder into Vercel or GitHub Pages. See README.md.</p>
         </div>
         <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);">
-          <a href="https://vercel.com" target="_blank" class="btn btn-out btn-sm" style="margin-right:8px;">Deploy to Vercel</a>
+          <a href="https://vercel.com" target="_blank" rel="noopener noreferrer" class="btn btn-out btn-sm" style="margin-right:8px;">Deploy to Vercel</a>
           <a href="guide.html" class="btn btn-blk btn-sm">📖 Read the Guide</a>
         </div>
       </div>
@@ -100,6 +115,7 @@
 </main>
 </div>
 <div id="toast"></div>
+<script src="js/analytics.js"></script>
 <script src="js/store.js"></script>
 <script>
 function renderStats(){
@@ -116,6 +132,7 @@ function exportNoSite(){
   const leads=Store.leads().filter(l=>!hasWebsite(l));
   if(!leads.length){toast('No no-website leads found');return;}
   Store.exportFiltered(leads);
+  if (window.track) track('export_clicked', { kind: 'no_website', count: leads.length });
   toast(`Exported ${leads.length} no-website leads`);
 }
 
@@ -124,6 +141,7 @@ function doImport(inp){
   const r=new FileReader();
   r.onload=e=>{
     const result=Store.importCSV(e.target.result);
+    if (window.track) track('csv_imported', { mode: 'merge', imported: result.imported, skipped: result.skipped || 0, source: 'settings' });
     toast(`Imported ${result.imported} leads${result.skipped ? `, skipped ${result.skipped} duplicates` : ''}`);
     renderStats();
   };
@@ -141,6 +159,9 @@ function clearAll(){
 }
 
 renderStats();
+if (window.track) track('page_view', { page: 'settings' });
 </script>
 </body>
 </html>
+
+

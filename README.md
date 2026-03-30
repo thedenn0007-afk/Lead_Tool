@@ -28,3 +28,5 @@ The helper listens on `http://127.0.0.1:47831`.
 - CSV files are ignored by Git
 - Scraped CSVs are meant to download to the user's machine
 - No backend database is required for the local-helper flow
+- Deployment guide: `DEPLOYMENT.md`
+- Release gate checklist: `RELEASE_CHECKLIST.md`

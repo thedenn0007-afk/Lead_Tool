@@ -146,86 +146,93 @@ async function getDetail(page, url, query, signal) {
 }
 
 async function runScrape({ query, maxResults, csvPath, signal, onProgress }) {
-  const browser = await chromium.launch({
-    headless: true,
-    args: ['--disable-blink-features=AutomationControlled'],
-  });
-
-  const context = await browser.newContext({
-    viewport: { width: 1366, height: 900 },
-    locale: 'en-IN',
-    timezoneId: 'Asia/Kolkata',
-    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/122.0.0.0 Safari/537.36',
-  });
-
-  await context.route('**/*.{png,jpg,jpeg,gif,webp,svg,ico,woff,woff2,ttf,eot}', (route) => route.abort());
-
-  const page = await context.newPage();
-  await page.goto(`https://www.google.com/maps/search/${encodeURIComponent(query)}`, {
-    waitUntil: 'domcontentloaded',
-    timeout: 30000,
-  });
-  await page.waitForTimeout(3000);
-
-  for (const text of ['Accept all', 'Reject all', 'I agree']) {
-    const button = page.locator(`button:has-text("${text}")`).first();
-    if (await button.count()) {
-      await button.click().catch(() => {});
-      await page.waitForTimeout(1000);
-      break;
-    }
-  }
-
-  onProgress({ progressPercent: 10, rowsFound: 0, message: 'Google Maps opened' });
-  const listingHandles = await scrollPanel(page, maxResults, signal, onProgress);
-
-  const listingUrls = [];
-  const seenUrls = new Set();
-  for (const handle of listingHandles) {
-    const href = await handle.getAttribute('href');
-    if (href && href.includes('/maps/place/') && !seenUrls.has(href)) {
-      seenUrls.add(href);
-      listingUrls.push(href);
-    }
-  }
-
+  let browser;
+  let context;
+  let page;
   const results = [];
-  const seenNames = new Set();
-  for (let index = 0; index < Math.min(listingUrls.length, maxResults); index += 1) {
-    if (signal()) throw new Error('Scrape cancelled');
-    const url = listingUrls[index];
-    onProgress({
-      progressPercent: Math.min(95, 45 + Math.round(((index + 1) / Math.max(Math.min(listingUrls.length, maxResults), 1)) * 50)),
-      rowsFound: results.length,
-      message: `Extracting business ${index + 1} of ${Math.min(listingUrls.length, maxResults)}`,
+  try {
+    browser = await chromium.launch({
+      headless: true,
+      args: ['--disable-blink-features=AutomationControlled'],
     });
 
-    try {
-      const detail = await getDetail(page, url, query, signal);
-      const nameKey = detail.business_name.toLowerCase();
-      if (!detail.business_name || seenNames.has(nameKey)) {
-        await page.goBack({ waitUntil: 'domcontentloaded', timeout: 10000 }).catch(() => {});
-        continue;
+    context = await browser.newContext({
+      viewport: { width: 1366, height: 900 },
+      locale: 'en-IN',
+      timezoneId: 'Asia/Kolkata',
+      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/122.0.0.0 Safari/537.36',
+    });
+
+    await context.route('**/*.{png,jpg,jpeg,gif,webp,svg,ico,woff,woff2,ttf,eot}', (route) => route.abort());
+
+    page = await context.newPage();
+    await page.goto(`https://www.google.com/maps/search/${encodeURIComponent(query)}`, {
+      waitUntil: 'domcontentloaded',
+      timeout: 30000,
+    });
+    await page.waitForTimeout(3000);
+
+    for (const text of ['Accept all', 'Reject all', 'I agree']) {
+      const button = page.locator(`button:has-text("${text}")`).first();
+      if (await button.count()) {
+        await button.click().catch(() => {});
+        await page.waitForTimeout(1000);
+        break;
       }
-      seenNames.add(nameKey);
-      results.push(detail);
-      await page.goBack({ waitUntil: 'domcontentloaded', timeout: 10000 }).catch(async () => {
+    }
+
+    onProgress({ progressPercent: 10, rowsFound: 0, message: 'Google Maps opened' });
+    const listingHandles = await scrollPanel(page, maxResults, signal, onProgress);
+
+    const listingUrls = [];
+    const seenUrls = new Set();
+    for (const handle of listingHandles) {
+      const href = await handle.getAttribute('href');
+      if (href && href.includes('/maps/place/') && !seenUrls.has(href)) {
+        seenUrls.add(href);
+        listingUrls.push(href);
+      }
+    }
+
+    const seenNames = new Set();
+    for (let index = 0; index < Math.min(listingUrls.length, maxResults); index += 1) {
+      if (signal()) throw new Error('Scrape cancelled');
+      const url = listingUrls[index];
+      onProgress({
+        progressPercent: Math.min(95, 45 + Math.round(((index + 1) / Math.max(Math.min(listingUrls.length, maxResults), 1)) * 50)),
+        rowsFound: results.length,
+        message: `Extracting business ${index + 1} of ${Math.min(listingUrls.length, maxResults)}`,
+      });
+
+      try {
+        const detail = await getDetail(page, url, query, signal);
+        const nameKey = detail.business_name.toLowerCase();
+        if (!detail.business_name || seenNames.has(nameKey)) {
+          await page.goBack({ waitUntil: 'domcontentloaded', timeout: 10000 }).catch(() => {});
+          continue;
+        }
+        seenNames.add(nameKey);
+        results.push(detail);
+        await page.goBack({ waitUntil: 'domcontentloaded', timeout: 10000 }).catch(async () => {
+          await page.goto(`https://www.google.com/maps/search/${encodeURIComponent(query)}`, {
+            waitUntil: 'domcontentloaded',
+            timeout: 20000,
+          });
+        });
+        await page.waitForTimeout(1200);
+      } catch (error) {
         await page.goto(`https://www.google.com/maps/search/${encodeURIComponent(query)}`, {
           waitUntil: 'domcontentloaded',
           timeout: 20000,
-        });
-      });
-      await page.waitForTimeout(1200);
-    } catch (error) {
-      await page.goto(`https://www.google.com/maps/search/${encodeURIComponent(query)}`, {
-        waitUntil: 'domcontentloaded',
-        timeout: 20000,
-      }).catch(() => {});
-      await page.waitForTimeout(1200);
+        }).catch(() => {});
+        await page.waitForTimeout(1200);
+      }
     }
+  } finally {
+    if (page) await page.close().catch(() => {});
+    if (context) await context.close().catch(() => {});
+    if (browser) await browser.close().catch(() => {});
   }
-
-  await browser.close();
 
   if (!results.length) throw new Error('No businesses found');
 

@@ -3,6 +3,21 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>LeadTool — Auto Scrape</title>
+<meta name="description" content="Auto scrape business leads, review results, and save/export without a database.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://leadtool.app/auto.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="LeadTool - Auto Scrape">
+<meta property="og:description" content="Automatically collect and export local business leads.">
+<meta property="og:url" content="https://leadtool.app/auto.html">
+<meta property="og:image" content="https://leadtool.app/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="LeadTool - Auto Scrape">
+<meta name="twitter:description" content="Automatically collect and export local business leads.">
+<meta name="twitter:image" content="https://leadtool.app/og-image.png">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"LeadTool","applicationCategory":"BusinessApplication","operatingSystem":"Web","url":"https://leadtool.app/auto.html"}
+</script>
 <link rel="stylesheet" href="css/style.css">
 <style>
 .method-card {
@@ -13,6 +28,9 @@
   transition: all .15s;
   background: white;
   position: relative;
+  width: 100%;
+  text-align: left;
+  font: inherit;
 }
 .method-card:hover { border-color: var(--ink); }
 .method-card.selected { border-color: var(--ink); background: #fafafa; }
@@ -136,7 +154,7 @@
 
   <!-- Method selector -->
   <div class="g2 mb24" style="gap:16px;">
-    <div class="method-card selected" id="card-apify" onclick="selectMethod('apify')">
+    <button type="button" class="method-card selected" id="card-apify" onclick="selectMethod('apify')">
       <div class="method-icon">☁️</div>
       <div class="method-title">Apify Cloud Scraper</div>
       <div class="method-sub">Paste your free API key once. Click Scrape. Leads appear automatically. Works from any device, no install needed.</div>
@@ -145,8 +163,8 @@
         <span class="tag tag-blu">No install</span>
         <span class="tag tag-grn">Easiest</span>
       </div>
-    </div>
-    <div class="method-card" id="card-python" onclick="selectMethod('python')">
+    </button>
+    <button type="button" class="method-card" id="card-python" onclick="selectMethod('python')">
       <div class="method-icon">🐍</div>
       <div class="method-title">Python Local Scraper</div>
       <div class="method-sub">Run the Python script on your computer. Import the CSV output here. Free forever, unlimited scrapes, no API limits.</div>
@@ -155,7 +173,7 @@
         <span class="tag tag-org">Needs Python installed</span>
         <span class="tag tag-grn">Unlimited</span>
       </div>
-    </div>
+    </button>
   </div>
 
   <!-- ═══ APIFY SECTION ═══ -->
@@ -170,13 +188,13 @@
 
           <!-- API Key -->
           <div class="field">
-            <div class="label">Apify API Key <span class="req">required</span></div>
+            <label class="label" for="apifyKey">Apify API Key <span class="req">required</span></label>
             <div class="api-key-field">
               <input type="password" id="apifyKey" placeholder="apify_api_xxxxxxxxxxxxxxxx" value="">
               <button class="btn btn-out btn-sm" onclick="toggleKey()">👁 Show</button>
               <button class="btn btn-blk btn-sm" onclick="saveKey()">Save</button>
             </div>
-            <p class="hint">Get your key: <a href="https://console.apify.com/account/integrations" target="_blank" style="color:var(--blue);">console.apify.com → Account → Integrations → API token</a></p>
+            <p class="hint">Get your key: <a href="https://console.apify.com/account/integrations" target="_blank" rel="noopener noreferrer" style="color:var(--blue);">console.apify.com → Account → Integrations → API token</a></p>
           </div>
 
           <div id="keyStatus" style="display:none;" class="info i-grn">✅ API key saved. Ready to scrape.</div>
@@ -187,46 +205,46 @@
           <div class="card-sub">Fill in the details below</div>
 
           <div class="field">
-            <div class="label">Business Type <span class="req">required</span></div>
+            <label class="label" for="aBiz">Business Type <span class="req">required</span></label>
             <input id="aBiz" placeholder="e.g. dental clinic, architect..." oninput="updateApifyQuery()">
             <div class="chips" style="margin-top:8px;" id="aBizChips">
               <div class="chips-label">Quick pick →</div>
-              <span class="chip" onclick="setABiz('dental clinic')">🦷 Dental</span>
-              <span class="chip" onclick="setABiz('dermatology clinic')">🏥 Dermatology</span>
-              <span class="chip" onclick="setABiz('architect')">🏗️ Architect</span>
-              <span class="chip" onclick="setABiz('visa consultant')">✈️ Visa Consultant</span>
-              <span class="chip" onclick="setABiz('interior designer')">🛋️ Interior Designer</span>
-              <span class="chip" onclick="setABiz('CA firm')">📊 CA Firm</span>
-              <span class="chip" onclick="setABiz('law firm')">⚖️ Law Firm</span>
-              <span class="chip" onclick="setABiz('yoga studio')">🧘 Yoga Studio</span>
-              <span class="chip" onclick="setABiz('event planner')">🎉 Event Planner</span>
-              <span class="chip" onclick="setABiz('gym')">🏋️ Gym</span>
-              <span class="chip" onclick="setABiz('salon')">💇 Salon</span>
-              <span class="chip" onclick="setABiz('coaching centre')">📚 Coaching</span>
+              <button type="button" class="chip" onclick="setABiz('dental clinic')">🦷 Dental</button>
+              <button type="button" class="chip" onclick="setABiz('dermatology clinic')">🏥 Dermatology</button>
+              <button type="button" class="chip" onclick="setABiz('architect')">🏗️ Architect</button>
+              <button type="button" class="chip" onclick="setABiz('visa consultant')">✈️ Visa Consultant</button>
+              <button type="button" class="chip" onclick="setABiz('interior designer')">🛋️ Interior Designer</button>
+              <button type="button" class="chip" onclick="setABiz('CA firm')">📊 CA Firm</button>
+              <button type="button" class="chip" onclick="setABiz('law firm')">⚖️ Law Firm</button>
+              <button type="button" class="chip" onclick="setABiz('yoga studio')">🧘 Yoga Studio</button>
+              <button type="button" class="chip" onclick="setABiz('event planner')">🎉 Event Planner</button>
+              <button type="button" class="chip" onclick="setABiz('gym')">🏋️ Gym</button>
+              <button type="button" class="chip" onclick="setABiz('salon')">💇 Salon</button>
+              <button type="button" class="chip" onclick="setABiz('coaching centre')">📚 Coaching</button>
             </div>
           </div>
 
           <div class="g2" style="gap:12px;">
             <div class="field" style="margin:0;">
-              <div class="label">City <span class="req">required</span></div>
+              <label class="label" for="aCity">City <span class="req">required</span></label>
               <input id="aCity" placeholder="e.g. Bangalore">
               <div class="chips" style="margin-top:6px;">
-                <span class="chip" onclick="setACity('Bangalore')">Bangalore</span>
-                <span class="chip" onclick="setACity('Mumbai')">Mumbai</span>
-                <span class="chip" onclick="setACity('Delhi')">Delhi</span>
-                <span class="chip" onclick="setACity('Chennai')">Chennai</span>
-                <span class="chip" onclick="setACity('Hyderabad')">Hyderabad</span>
-                <span class="chip" onclick="setACity('Pune')">Pune</span>
+                <button type="button" class="chip" onclick="setACity('Bangalore')">Bangalore</button>
+                <button type="button" class="chip" onclick="setACity('Mumbai')">Mumbai</button>
+                <button type="button" class="chip" onclick="setACity('Delhi')">Delhi</button>
+                <button type="button" class="chip" onclick="setACity('Chennai')">Chennai</button>
+                <button type="button" class="chip" onclick="setACity('Hyderabad')">Hyderabad</button>
+                <button type="button" class="chip" onclick="setACity('Pune')">Pune</button>
               </div>
             </div>
             <div class="field" style="margin:0;">
-              <div class="label">Area <span class="opt">(optional)</span></div>
+              <label class="label" for="aArea">Area <span class="opt">(optional)</span></label>
               <input id="aArea" placeholder="e.g. Koramangala">
             </div>
           </div>
 
           <div class="field">
-            <div class="label">Max Results</div>
+            <label class="label" for="aMax">Max Results</label>
             <select id="aMax">
               <option value="50">50 businesses (fast ~1 min)</option>
               <option value="100">100 businesses (~2 min)</option>
@@ -285,7 +303,7 @@
         <div class="card" id="apifyHelp">
           <div class="card-title mb16">🔑 How to get your free Apify API key</div>
           <div class="steps">
-            <div class="step-row"><div class="step-n">1</div><div class="step-body">Go to <a href="https://apify.com" target="_blank" style="color:var(--blue);font-weight:700;">apify.com</a> → Sign up free (no credit card)</div></div>
+            <div class="step-row"><div class="step-n">1</div><div class="step-body">Go to <a href="https://apify.com" target="_blank" rel="noopener noreferrer" style="color:var(--blue);font-weight:700;">apify.com</a> → Sign up free (no credit card)</div></div>
             <div class="step-row"><div class="step-n">2</div><div class="step-body">Go to <strong>Account → Integrations</strong> → copy your <strong>Personal API token</strong></div></div>
             <div class="step-row"><div class="step-n">3</div><div class="step-body">Paste it in the API Key field above → click <strong>Save</strong></div></div>
             <div class="step-row"><div class="step-n">4</div><div class="step-body">Free tier gives <strong>$5/month credits</strong> — enough for ~500 business scrapes/month</div></div>
@@ -308,7 +326,7 @@
           <div class="card-sub">One-time install, then unlimited free scrapes forever</div>
 
           <div class="steps">
-            <div class="step-row"><div class="step-n">1</div><div class="step-body">Make sure Python 3 is installed: <a href="https://python.org/downloads" target="_blank" style="color:var(--blue);">python.org/downloads</a></div></div>
+            <div class="step-row"><div class="step-n">1</div><div class="step-body">Make sure Python 3 is installed: <a href="https://python.org/downloads" target="_blank" rel="noopener noreferrer" style="color:var(--blue);">python.org/downloads</a></div></div>
             <div class="step-row"><div class="step-n">2</div><div class="step-body">Download <strong>gmaps_scraper.py</strong> below and save it to your Desktop</div></div>
             <div class="step-row"><div class="step-n">3</div><div class="step-body">Open Terminal (Mac/Linux) or Command Prompt (Windows) in that folder</div></div>
             <div class="step-row"><div class="step-n">4</div><div class="step-body">Run the install command once: <code style="background:#f0f0f0;padding:2px 6px;border-radius:4px;font-size:12px;">pip install playwright pandas && playwright install chromium</code></div></div>
@@ -322,27 +340,27 @@
           <div class="card-sub">Fill in below — copy the command — paste in Terminal</div>
 
           <div class="field">
-            <div class="label">Business Type</div>
+            <label class="label" for="pBiz">Business Type</label>
             <input id="pBiz" placeholder="e.g. dental clinic" oninput="updatePyCmd()">
             <div class="chips" style="margin-top:8px;">
-              <span class="chip" onclick="setPBiz('dental clinic')">🦷 Dental</span>
-              <span class="chip" onclick="setPBiz('dermatology clinic')">🏥 Dermatology</span>
-              <span class="chip" onclick="setPBiz('architect')">🏗️ Architect</span>
-              <span class="chip" onclick="setPBiz('visa consultant')">✈️ Visa</span>
-              <span class="chip" onclick="setPBiz('interior designer')">🛋️ Interior</span>
-              <span class="chip" onclick="setPBiz('law firm')">⚖️ Law</span>
-              <span class="chip" onclick="setPBiz('yoga studio')">🧘 Yoga</span>
-              <span class="chip" onclick="setPBiz('gym')">🏋️ Gym</span>
+              <button type="button" class="chip" onclick="setPBiz('dental clinic')">🦷 Dental</button>
+              <button type="button" class="chip" onclick="setPBiz('dermatology clinic')">🏥 Dermatology</button>
+              <button type="button" class="chip" onclick="setPBiz('architect')">🏗️ Architect</button>
+              <button type="button" class="chip" onclick="setPBiz('visa consultant')">✈️ Visa</button>
+              <button type="button" class="chip" onclick="setPBiz('interior designer')">🛋️ Interior</button>
+              <button type="button" class="chip" onclick="setPBiz('law firm')">⚖️ Law</button>
+              <button type="button" class="chip" onclick="setPBiz('yoga studio')">🧘 Yoga</button>
+              <button type="button" class="chip" onclick="setPBiz('gym')">🏋️ Gym</button>
             </div>
           </div>
 
           <div class="g2" style="gap:12px;">
             <div class="field" style="margin:0;">
-              <div class="label">City</div>
+              <label class="label" for="pCity">City</label>
               <input id="pCity" placeholder="e.g. Bangalore" oninput="updatePyCmd()">
             </div>
             <div class="field" style="margin:0;">
-              <div class="label">How Many Results</div>
+              <label class="label" for="pMax">How Many Results</label>
               <select id="pMax" onchange="updatePyCmd()">
                 <option value="100">100</option>
                 <option value="200" selected>200</option>
@@ -425,6 +443,7 @@
 </main>
 </div>
 <div id="toast"></div>
+<script src="js/analytics.js"></script>
 <script src="js/store.js"></script>
 <script>
 // ── Method switching ──────────────────────────────────────────────────────────
@@ -432,6 +451,7 @@ let currentMethod = 'apify';
 let scrapeResults = [];
 let runId = null;
 let pollTimer = null;
+let pollStopped = false;
 
 function selectMethod(m) {
   currentMethod = m;
@@ -443,19 +463,19 @@ function selectMethod(m) {
 
 // ── Key management ────────────────────────────────────────────────────────────
 function loadKey() {
-  const k = localStorage.getItem('lt_apify_key')||'';
-  document.getElementById('apifyKey').value = k;
-  document.getElementById('keyStatus').style.display = k ? '' : 'none';
-  document.getElementById('apifyHelp').style.display = k ? 'none' : '';
+  const key = sessionStorage.getItem('lt_apify_key') || '';
+  document.getElementById('apifyKey').value = key;
+  document.getElementById('keyStatus').style.display = key ? '' : 'none';
+  document.getElementById('apifyHelp').style.display = key ? 'none' : '';
 }
 
 function saveKey() {
-  const k = document.getElementById('apifyKey').value.trim();
-  if (!k) { toast('Enter an API key first'); return; }
-  localStorage.setItem('lt_apify_key', k);
+  const key = document.getElementById('apifyKey').value.trim();
+  if (!key) { toast('Enter an API key first'); return; }
+  sessionStorage.setItem('lt_apify_key', key);
   document.getElementById('keyStatus').style.display = '';
   document.getElementById('apifyHelp').style.display = 'none';
-  toast('✅ API key saved!');
+  toast('API key saved for this session');
 }
 
 function toggleKey() {
@@ -463,12 +483,19 @@ function toggleKey() {
   inp.type = inp.type === 'password' ? 'text' : 'password';
 }
 
+function apifyAuthHeaders(key) {
+  return {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${key}`
+  };
+}
+
 // ── Query preview ─────────────────────────────────────────────────────────────
 function updateApifyQuery() {
   const biz = document.getElementById('aBiz').value.trim();
   const city = document.getElementById('aCity').value.trim();
   const area = document.getElementById('aArea').value.trim();
-  const q = biz && city ? (area ? `${biz} ${area} ${city}` : `${biz} ${city}`) : '— fill in business type and city above —';
+  const q = biz && city ? (area ? `${biz} ${area} ${city}` : `${biz} ${city}`) : 'Fill business type and city above';
   document.getElementById('apifyQueryText').textContent = q;
 }
 
@@ -492,7 +519,7 @@ function setProgress(pct, title, sub) {
 }
 
 async function startApifyScrape() {
-  const key = localStorage.getItem('lt_apify_key')||'';
+  const key = sessionStorage.getItem('lt_apify_key')||'';
   if (!key) { toast('Save your Apify API key first'); return; }
 
   const biz = document.getElementById('aBiz').value.trim();
@@ -516,15 +543,16 @@ async function startApifyScrape() {
 
   log(`Starting Apify scrape for: "${query}"`, 'log-info');
   log(`Target: ${max} businesses`, 'log-info');
+  if (window.track) track('apify_scrape_started', { query, max });
   setProgress(5, 'Connecting to Apify...', 'Starting scraper actor');
 
   try {
     // Start the Apify actor run
     const startRes = await fetch(
-      `https://api.apify.com/v2/acts/compass~crawler-google-places/runs?token=${key}`,
+      `https://api.apify.com/v2/acts/compass~crawler-google-places/runs`,
       {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: apifyAuthHeaders(key),
         body: JSON.stringify({
           searchStringsArray: [query],
           maxCrawledPlacesPerSearch: max,
@@ -550,9 +578,12 @@ async function startApifyScrape() {
     setProgress(15, 'Scraper running...', 'Google Maps is being crawled');
 
     // Poll for completion
-    pollTimer = setInterval(() => pollRun(key, max), 4000);
+    pollStopped = false;
+    clearTimeout(pollTimer);
+    pollRun(key, max);
 
   } catch (e) {
+    if (window.track) track('apify_scrape_failed', { error: String(e?.message || e || 'unknown') });
     log(`Network error: ${e.message}`, 'log-err');
     log('Check your internet connection or API key', 'log-warn');
     resetScrapeBtn();
@@ -560,39 +591,48 @@ async function startApifyScrape() {
 }
 
 async function pollRun(key, max) {
-  if (!runId) return;
+  if (!runId || pollStopped) return;
   try {
-    const res = await fetch(`https://api.apify.com/v2/actor-runs/${runId}?token=${key}`);
-    const data = await res.json();
-    const run = data.data;
-    const status = run?.status;
-    const stats = run?.stats;
-    const found = stats?.itemCount || 0;
+    const res = await fetch(`https://api.apify.com/v2/actor-runs/${runId}`, {
+      headers: { Authorization: `Bearer ${key}` }
+    });
+    const data = await res.json().catch(() => ({}));
+    const run = data.data || {};
+    const status = run.status || 'UNKNOWN';
+    const stats = run.stats || {};
+    const found = stats.itemCount || 0;
 
     document.getElementById('progressCount').textContent = `${found} businesses found so far...`;
-    const pct = Math.min(90, 15 + (found / max * 70));
+    const pct = Math.min(90, 15 + (found / Math.max(max, 1) * 70));
     setProgress(pct, `Scraping... ${found}/${max} found`, `Status: ${status}`);
     log(`Status: ${status} | Found: ${found}`);
 
     if (status === 'SUCCEEDED' || status === 'FINISHED') {
-      clearInterval(pollTimer);
-      log(`✅ Scrape complete! ${found} businesses found`, 'log-info');
+      log(`Scrape complete! ${found} businesses found`, 'log-info');
       setProgress(95, 'Downloading results...', 'Fetching data');
       await fetchResults(key);
-    } else if (['FAILED','ABORTED','TIMED-OUT'].includes(status)) {
-      clearInterval(pollTimer);
+      if (window.track) track('apify_scrape_succeeded', { found });
+      return;
+    }
+    if (['FAILED','ABORTED','TIMED-OUT'].includes(status)) {
+      if (window.track) track('apify_scrape_failed', { status });
       log(`Run ended with status: ${status}`, 'log-err');
       resetScrapeBtn();
+      runId = null;
+      return;
     }
-  } catch(e) {
+    pollTimer = setTimeout(() => pollRun(key, max), 4000);
+  } catch (e) {
+    if (window.track) track('apify_scrape_poll_error', { error: String(e?.message || e || 'unknown') });
     log(`Poll error: ${e.message}`, 'log-warn');
+    pollTimer = setTimeout(() => pollRun(key, max), 5000);
   }
 }
-
 async function fetchResults(key) {
   try {
     const res = await fetch(
-      `https://api.apify.com/v2/actor-runs/${runId}/dataset/items?token=${key}&format=json&limit=500`
+      `https://api.apify.com/v2/actor-runs/${runId}/dataset/items?format=json&limit=500`,
+      { headers: { Authorization: `Bearer ${key}` } }
     );
     const items = await res.json();
     log(`Downloaded ${items.length} records`, 'log-info');
@@ -626,50 +666,97 @@ function showResults() {
   document.getElementById('progressCard').style.display = 'none';
   document.getElementById('resultsCard').style.display = '';
 
-  const noSite = scrapeResults.filter(r => !r.website || r.hasWebsite === 'NO').length;
-  document.getElementById('resultsTitle').textContent = `✅ ${scrapeResults.length} businesses scraped`;
-  document.getElementById('resultsSub').textContent = `${noSite} without a website · ${scrapeResults.length - noSite} have websites`;
+  const noSite = scrapeResults.filter((r) => !r.website || r.hasWebsite === 'NO').length;
+  document.getElementById('resultsTitle').textContent = `${scrapeResults.length} businesses scraped`;
+  document.getElementById('resultsSub').textContent = `${noSite} without a website � ${scrapeResults.length - noSite} have websites`;
 
-  document.getElementById('resultsList').innerHTML = scrapeResults.slice(0,50).map(r => `
-    <div class="result-row">
-      <div style="flex:1;min-width:0;">
-        <div style="font-weight:700;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${r.name}</div>
-        <div style="font-size:11px;color:var(--ink3);">${r.category||'—'} · ${r.area||r.city||'—'} · ⭐${r.reviews||0}</div>
-      </div>
-      <div class="flex gap8">
-        ${r.phone ? `<span style="font-size:12px;color:var(--green);font-weight:600;">${r.phone}</span>` : ''}
-        ${r.website ? `<span class="badge b-hassite">🌐 Has site</span>` : `<span class="badge b-nosite">✅ No site</span>`}
-      </div>
-    </div>
-  `).join('') + (scrapeResults.length > 50 ? `<div style="padding:12px;text-align:center;font-size:13px;color:var(--ink3);">+ ${scrapeResults.length-50} more (saved to database)</div>` : '');
+  const list = document.getElementById('resultsList');
+  list.innerHTML = '';
+  scrapeResults.slice(0, 50).forEach((r) => {
+    const row = document.createElement('div');
+    row.className = 'result-row';
 
-  toast(`🎉 Scraped ${scrapeResults.length} businesses!`);
+    const left = document.createElement('div');
+    left.style.cssText = 'flex:1;min-width:0;';
+
+    const name = document.createElement('div');
+    name.style.cssText = 'font-weight:700;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;';
+    name.textContent = r.name || '';
+
+    const meta = document.createElement('div');
+    meta.style.cssText = 'font-size:11px;color:var(--ink3);';
+    meta.textContent = `${r.category || '-'} � ${r.area || r.city || '-'} � ${r.reviews || 0} reviews`;
+
+    left.appendChild(name);
+    left.appendChild(meta);
+
+    const right = document.createElement('div');
+    right.className = 'flex gap8';
+
+    if (r.phone) {
+      const phone = document.createElement('span');
+      phone.style.cssText = 'font-size:12px;color:var(--green);font-weight:600;';
+      phone.textContent = r.phone;
+      right.appendChild(phone);
+    }
+
+    const badge = document.createElement('span');
+    badge.className = r.website ? 'badge b-hassite' : 'badge b-nosite';
+    badge.textContent = r.website ? 'Has site' : 'No site';
+    right.appendChild(badge);
+
+    row.appendChild(left);
+    row.appendChild(right);
+    list.appendChild(row);
+  });
+
+  if (scrapeResults.length > 50) {
+    const more = document.createElement('div');
+    more.style.cssText = 'padding:12px;text-align:center;font-size:13px;color:var(--ink3);';
+    more.textContent = `+ ${scrapeResults.length - 50} more (saved to database)`;
+    list.appendChild(more);
+  }
+
+  toast(`Scraped ${scrapeResults.length} businesses`);
 }
-
 function saveAllToDb() {
   if (!scrapeResults.length) return;
   let saved = 0;
   scrapeResults.forEach(r => { Store.add(r); saved++; });
   toast(`✅ Saved ${saved} leads to database!`);
+  if (window.track) track('apify_results_saved', { count: saved });
 }
 
 function downloadResults() {
   if (!scrapeResults.length) return;
   Store.exportFiltered(scrapeResults);
+  if (window.track) track('export_clicked', { kind: 'apify_results', count: scrapeResults.length });
 }
 
 function cancelScrape() {
-  clearInterval(pollTimer);
+  pollStopped = true;
+  clearTimeout(pollTimer);
+  const key = sessionStorage.getItem('lt_apify_key') || '';
+  const activeRunId = runId;
   runId = null;
+  if (key && activeRunId) {
+    fetch(`https://api.apify.com/v2/actor-runs/${activeRunId}/abort`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${key}` }
+    }).then((res) => {
+      if (res.ok) log('Apify run aborted', 'log-warn');
+      else log(`Abort request returned ${res.status}`, 'log-warn');
+    }).catch((error) => log(`Abort failed: ${error.message}`, 'log-warn'));
+  }
   document.getElementById('progressCard').style.display = 'none';
   resetScrapeBtn();
   toast('Scrape cancelled');
+  if (window.track) track('apify_scrape_cancelled');
 }
-
 function resetScrapeBtn() {
   const btn = document.getElementById('scrapeBtn');
   btn.disabled = false;
-  btn.textContent = '🚀 Start Scraping';
+  btn.textContent = 'Start Scraping';
 }
 
 // ── Python section ────────────────────────────────────────────────────────────
@@ -687,12 +774,16 @@ function copyCmd() {
 }
 
 function importPyCSV(inp, mode = 'merge') {
+  if (mode === 'replace' && !confirm('Replace will delete all existing leads. Continue?')) return;
   const file = inp && inp.files ? inp.files[0] : inp;
   if (!file) { toast('Choose a CSV file first'); return; }
   const r = new FileReader();
   r.onload = e => {
     const result = Store.importCSV(e.target.result, mode);
-    if (result.imported > 0) toast(`Imported ${result.imported} leads${result.skipped ? `, skipped ${result.skipped} duplicates` : ''}`);
+    if (result.imported > 0) {
+      if (window.track) track('csv_imported', { mode, imported: result.imported, skipped: result.skipped || 0, source: 'python' });
+      toast(`Imported ${result.imported} leads${result.skipped ? `, skipped ${result.skipped} duplicates` : ''}`);
+    }
   };
   r.readAsText(file);
 }
@@ -704,7 +795,7 @@ pd.addEventListener('dragleave', ()=>pd.style.borderColor='');
 pd.addEventListener('drop', e=>{
   e.preventDefault(); pd.style.borderColor='';
   const f=e.dataTransfer.files[0];
-  if(f){const r=new FileReader();r.onload=ev=>{const result = Store.importCSV(ev.target.result, 'merge');if(result.imported > 0)toast(`Imported ${result.imported} leads${result.skipped ? `, skipped ${result.skipped} duplicates` : ''}`);};r.readAsText(f);}
+  if(f){const r=new FileReader();r.onload=ev=>{const result = Store.importCSV(ev.target.result, 'merge');if(result.imported > 0){if (window.track) track('csv_imported', { mode: 'merge', imported: result.imported, skipped: result.skipped || 0, source: 'python_drop' });toast(`Imported ${result.imported} leads${result.skipped ? `, skipped ${result.skipped} duplicates` : ''}`);}};r.readAsText(f);}
 });
 
 function downloadPyScript() {
@@ -883,6 +974,16 @@ if __name__ == "__main__": main()
 loadKey();
 updateApifyQuery();
 updatePyCmd();
+if (window.track) track('page_view', { page: 'auto' });
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
